@@ -188,7 +188,6 @@ export function ModelConfigList(props: {
       >
         <input
           type="number"
-          title={props.modelConfig.historyMessageCount.toString()}
           value={props.modelConfig.historyMessageCount}
           onChange={(e) =>
             props.updateConfig(
