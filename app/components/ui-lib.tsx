@@ -361,6 +361,7 @@ function PromptInput(props: {
       value={input}
       onInput={(e) => onInput(e.currentTarget.value)}
       rows={props.rows ?? 3}
+      dir="auto"
     ></textarea>
   );
 }

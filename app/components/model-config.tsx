@@ -41,7 +41,7 @@ export function ModelConfigList(props: {
         <InputRange
           value={props.modelConfig.temperature?.toFixed(1)}
           min="0"
-          max="1" // lets limit it to 0-1
+          max="2"
           step="0.1"
           onChange={(e) => {
             props.updateConfig(
@@ -72,25 +72,38 @@ export function ModelConfigList(props: {
           }}
         ></InputRange>
       </ListItem>
-      <ListItem
-        title={Locale.Settings.MaxTokens.Title}
-        subTitle={Locale.Settings.MaxTokens.SubTitle}
-      >
+      <ListItem title={"Use Max Tokens"}>
         <input
-          type="number"
-          min={1024}
-          max={512000}
-          value={props.modelConfig.max_tokens}
+          type="checkbox"
+          checked={props.modelConfig.useMaxTokens}
           onChange={(e) =>
             props.updateConfig(
-              (config) =>
-                (config.max_tokens = ModalConfigValidator.max_tokens(
-                  e.currentTarget.valueAsNumber,
-                )),
+              (config) => (config.useMaxTokens = e.currentTarget.checked),
             )
           }
         ></input>
       </ListItem>
+      {props.modelConfig.useMaxTokens && (
+        <ListItem
+          title={Locale.Settings.MaxTokens.Title}
+          subTitle={Locale.Settings.MaxTokens.SubTitle}
+        >
+          <input
+            type="number"
+            min={1}
+            max={32768}
+            value={props.modelConfig.max_tokens}
+            onChange={(e) =>
+              props.updateConfig(
+                (config) =>
+                  (config.max_tokens = ModalConfigValidator.max_tokens(
+                    e.currentTarget.valueAsNumber,
+                  )),
+              )
+            }
+          ></input>
+        </ListItem>
+      )}
 
       {props.modelConfig.model.startsWith("gemini") ? null : (
         <>

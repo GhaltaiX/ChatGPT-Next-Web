@@ -393,21 +393,24 @@ function useScrollToBottom(
 
   const [autoScroll, setAutoScroll] = useState(true);
   function scrollDomToBottom() {
+    if (!autoScroll) {
+      setAutoScroll(true);
+    }
     const dom = scrollRef.current;
     if (dom) {
-      requestAnimationFrame(() => {
-        setAutoScroll(true);
-        dom.scrollTo(0, dom.scrollHeight);
-      });
+      dom.scrollTo(0, dom.scrollHeight);
     }
   }
 
   // auto scroll
   useEffect(() => {
     if (autoScroll && !detach) {
-      scrollDomToBottom();
+      const dom = scrollRef.current;
+      if (dom) {
+        dom.scrollTo(0, dom.scrollHeight);
+      }
     }
-  });
+  }, [autoScroll, detach, scrollRef]);
 
   return {
     scrollRef,
@@ -872,6 +875,7 @@ function _Chat() {
       console.error("[Chat] failed to find resending message", message);
       return;
     }
+    session.messages.slice(resendingIndex + 1).forEach(msg => deleteMessage(msg.id));
 
     let userMessage: ChatMessage | undefined;
     let botMessage: ChatMessage | undefined;
@@ -910,7 +914,7 @@ function _Chat() {
     const textContent = getMessageTextContent(userMessage);
     const images = getMessageImages(userMessage);
     chatStore.onUserInput(textContent, images).then(() => setIsLoading(false));
-    inputRef.current?.focus();
+    //inputRef.current?.focus();
   };
 
   const onPinMessage = (message: ChatMessage) => {
@@ -1397,11 +1401,11 @@ function _Chat() {
                         message.content.length === 0 &&
                         !isUser
                       }
-                      onContextMenu={(e) => onRightClick(e, message)}
+                      /*onContextMenu={(e) => onRightClick(e, message)}
                       onDoubleClickCapture={() => {
                         if (!isMobileScreen) return;
                         setUserInput(getMessageTextContent(message));
-                      }}
+                      }}*/
                       fontSize={fontSize}
                       parentRef={scrollRef}
                       defaultShow={i >= messages.length - 6}
@@ -1441,7 +1445,7 @@ function _Chat() {
                   <div className={styles["chat-message-action-date"]}>
                     {isContext
                       ? Locale.Chat.IsContext
-                      : message.date.toLocaleString()}
+                      : `${message.model ? `${message.model} | ` : ""}${message.date.toLocaleString()}`}
                   </div>
                 </div>
               </div>
@@ -1498,6 +1502,7 @@ function _Chat() {
             style={{
               fontSize: config.fontSize,
             }}
+            dir="auto"
           />
           {attachImages.length != 0 && (
             <div className={styles["attach-images"]}>

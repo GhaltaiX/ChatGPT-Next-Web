@@ -342,25 +342,25 @@ const en: LocaleType = {
     Model: "Model",
     Temperature: {
       Title: "Temperature",
-      SubTitle: "A larger value makes the more random output",
+      SubTitle: "Controls response randomness. Higher=more creative, lower=more focused",
     },
     TopP: {
       Title: "Top P",
-      SubTitle: "Do not alter this value together with temperature",
+      SubTitle: "Limits considered tokens. Higher=more variety, lower=more predictable",
     },
     MaxTokens: {
       Title: "Max Tokens",
-      SubTitle: "Maximum length of input tokens and generated tokens",
+      SubTitle: "Sets response length. Higher=longer, lower=shorter",
     },
     PresencePenalty: {
       Title: "Presence Penalty",
       SubTitle:
-        "A larger value increases the likelihood to talk about new topics",
+        "Discourages topic reuse. Higher=new topics, lower=allows topic repetition",
     },
     FrequencyPenalty: {
       Title: "Frequency Penalty",
       SubTitle:
-        "A larger value decreasing the likelihood to repeat the same line",
+        "Decreases repeated words. Higher=less repetition, lower=more repetition",
     },
   },
   Store: {
@@ -371,7 +371,7 @@ const en: LocaleType = {
       History: (content: string) =>
         "This is a summary of the chat history as a recap: " + content,
       Topic:
-        "Please generate a four to five word title summarizing our conversation without any lead-in, punctuation, quotation marks, periods, symbols, bold text, or additional text. Remove enclosing quotation marks.",
+      "Write a title for the previous prompt in 4 words, and don't write anything else. Don't write 'Title: '",
       Summarize:
         "Summarize the discussion briefly in 200 words or less to use as a prompt for future context.",
     },

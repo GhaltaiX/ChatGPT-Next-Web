@@ -76,14 +76,14 @@
     }
 
     &:hover {
-      --delay: 0.5s;
+/*      --delay: 0.5s;
       width: var(--full-width);
-      transition-delay: var(--delay);
+      transition-delay: var(--delay);*/
 
       .text {
-        transition-delay: var(--delay);
+/*        transition-delay: var(--delay);
         opacity: 1;
-        transform: translate(0);
+        transform: translate(0);*/
       }
     }
 

@@ -84,14 +84,7 @@ function createEmptySession(): ChatSession {
 }
 
 function getSummarizeModel(currentModel: string) {
-  // if it is using gpt-* models, force to use 3.5 to summarize
-  if (currentModel.startsWith("gpt")) {
-    return SUMMARIZE_MODEL;
-  }
-  if (currentModel.startsWith("gemini-pro")) {
-    return GEMINI_SUMMARIZE_MODEL;
-  }
-  return currentModel;
+  return SUMMARIZE_MODEL;
 }
 
 function countMessages(msgs: ChatMessage[]) {
@@ -428,10 +421,8 @@ export const useChatStore = createPersistStore(
         // in-context prompts
         const contextPrompts = session.mask.context.slice();
 
-        // system prompts, to get close to OpenAI Web ChatGPT
-        const shouldInjectSystemPrompts =
-          modelConfig.enableInjectSystemPrompts &&
-          session.mask.modelConfig.model.startsWith("gpt-");
+        // inject system prompt
+        const shouldInjectSystemPrompts = modelConfig.enableInjectSystemPrompts;
 
         var systemPrompts: ChatMessage[] = [];
         systemPrompts = shouldInjectSystemPrompts
@@ -486,7 +477,7 @@ export const useChatStore = createPersistStore(
         const reversedRecentMessages = [];
         for (
           let i = totalMessageCount - 1, tokenCount = 0;
-          i >= contextStartIndex && tokenCount < maxTokenThreshold;
+          i >= contextStartIndex;// && tokenCount < maxTokenThreshold;
           i -= 1
         ) {
           const msg = messages[i];
