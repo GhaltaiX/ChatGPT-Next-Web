@@ -186,18 +186,16 @@ export function ModelConfigList(props: {
         title={Locale.Settings.HistoryCount.Title}
         subTitle={Locale.Settings.HistoryCount.SubTitle}
       >
-        <InputRange
+        <input
+          type="number"
           title={props.modelConfig.historyMessageCount.toString()}
           value={props.modelConfig.historyMessageCount}
-          min="0"
-          max="64"
-          step="1"
           onChange={(e) =>
             props.updateConfig(
               (config) => (config.historyMessageCount = e.target.valueAsNumber),
             )
           }
-        ></InputRange>
+        ></input>
       </ListItem>
 
       <ListItem
