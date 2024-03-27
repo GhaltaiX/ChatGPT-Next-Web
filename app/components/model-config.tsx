@@ -188,10 +188,11 @@ export function ModelConfigList(props: {
       >
         <input
           type="number"
+          min={0}
           value={props.modelConfig.historyMessageCount}
           onChange={(e) =>
             props.updateConfig(
-              (config) => (config.historyMessageCount = e.target.valueAsNumber),
+              (config) => (config.historyMessageCount = e.currentTarget.valueAsNumber),
             )
           }
         ></input>
