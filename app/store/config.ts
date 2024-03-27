@@ -69,7 +69,7 @@ export function limitNumber(
   x: number,
   min: number,
   max: number,
-  defaultValue?: number,
+  defaultValue: number,
 ) {
   if (isNaN(x)) {
     return defaultValue;
@@ -83,7 +83,7 @@ export const ModalConfigValidator = {
     return x as ModelType;
   },
   max_tokens(x: number) {
-    return limitNumber(x, 1, 32768);
+    return limitNumber(x, 1, 32768, 4096);
   },
   presence_penalty(x: number) {
     return limitNumber(x, -2, 2, 0);
