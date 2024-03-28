@@ -480,20 +480,11 @@ export function ChatActions(props: {
 
   return (
     <div className={styles["chat-input-actions"]}>
-      {!props.hitBottom && (
-        <ChatAction
-          onClick={props.scrollToBottom}
-          text={Locale.Chat.InputActions.ToBottom}
-          icon={<BottomIcon />}
-        />
-      )}
-      {props.hitBottom && (
-        <ChatAction
-          onClick={props.showPromptModal}
-          text={Locale.Chat.InputActions.Settings}
-          icon={<SettingsIcon />}
-        />
-      )}
+      <ChatAction
+        onClick={props.showPromptModal}
+        text={Locale.Chat.InputActions.Settings}
+        icon={<SettingsIcon />}
+      />
 
       {showUploadImage && (
         <ChatAction
@@ -558,6 +549,14 @@ export function ChatActions(props: {
           onClick={stopAll}
           text={Locale.Chat.InputActions.Stop}
           icon={<StopIcon />}
+        />
+      )}
+
+      {!props.hitBottom && (
+        <ChatAction
+          onClick={props.scrollToBottom}
+          text={Locale.Chat.InputActions.ToBottom}
+          icon={<BottomIcon />}
         />
       )}
 
