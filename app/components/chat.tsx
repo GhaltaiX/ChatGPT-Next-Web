@@ -509,7 +509,7 @@ export function ChatActions(props: {
           icon={props.uploading ? <LoadingButtonIcon /> : <ImageIcon />}
         />
       )}
-      <ChatAction
+{/*      <ChatAction
         onClick={nextTheme}
         text={Locale.Chat.InputActions.Theme[theme]}
         icon={
@@ -537,7 +537,7 @@ export function ChatActions(props: {
         }}
         text={Locale.Chat.InputActions.Masks}
         icon={<MaskIcon />}
-      />
+      />*/}
 
       <ChatAction
         text={Locale.Chat.InputActions.Clear}

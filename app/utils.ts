@@ -293,6 +293,7 @@ export function isVisionModel(model: string) {
   const visionKeywords = [
     "vision",
     "claude-3",
+    "gemini-pro-1.5"
   ];
 
   return visionKeywords.some(keyword => model.includes(keyword));
