@@ -480,13 +480,6 @@ export function ChatActions(props: {
 
   return (
     <div className={styles["chat-input-actions"]}>
-      {couldStop && (
-        <ChatAction
-          onClick={stopAll}
-          text={Locale.Chat.InputActions.Stop}
-          icon={<StopIcon />}
-        />
-      )}
       {!props.hitBottom && (
         <ChatAction
           onClick={props.scrollToBottom}
@@ -559,6 +552,14 @@ export function ChatActions(props: {
         text={currentModel}
         icon={<RobotIcon />}
       />
+
+      {couldStop && (
+        <ChatAction
+          onClick={stopAll}
+          text={Locale.Chat.InputActions.Stop}
+          icon={<StopIcon />}
+        />
+      )}
 
       {showModelSelector && (
         <Selector
