@@ -265,11 +265,11 @@ export function isMacOS(): boolean {
 
 export function getMessageTextContent(message: RequestMessage) {
   if (typeof message.content === "string") {
-    return message.content;
+    return message.content.trim();
   }
   for (const c of message.content) {
     if (c.type === "text") {
-      return c.text ?? "";
+      return (c.text ?? "").trim();
     }
   }
   return "";
