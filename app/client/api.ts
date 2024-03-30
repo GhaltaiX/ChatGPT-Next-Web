@@ -162,6 +162,10 @@ export function getHeaders() {
     ? accessStore.googleApiKey
     : isAzure
     ? accessStore.azureApiKey
+    : accessStore.provider === ServiceProvider.OpenAI2
+    ? accessStore.openai2ApiKey
+    : accessStore.provider === ServiceProvider.OpenAI3
+    ? accessStore.openai3ApiKey
     : accessStore.openaiApiKey;
   const clientConfig = getClientConfig();
   const makeBearer = (s: string) => `${isAzure ? "" : "Bearer "}${s.trim()}`;

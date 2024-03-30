@@ -1001,6 +1001,72 @@ export function Settings() {
                           }}
                         />
                       </ListItem>
+                      </>
+                  ) : accessStore.provider === "OpenAI2" ? (
+                    <>
+                      <ListItem
+                        title={Locale.Settings.Access.OpenAI.Endpoint.Title}
+                        subTitle={Locale.Settings.Access.OpenAI.Endpoint.SubTitle}
+                      >
+                        <input
+                          type="text"
+                          value={accessStore.openai2Url}
+                          placeholder={OPENAI_BASE_URL}
+                          onChange={(e) =>
+                            accessStore.update(
+                              (access) => (access.openai2Url = e.currentTarget.value),
+                            )
+                          }
+                        ></input>
+                      </ListItem>
+                      <ListItem
+                        title={Locale.Settings.Access.OpenAI.ApiKey.Title}
+                        subTitle={Locale.Settings.Access.OpenAI.ApiKey.SubTitle}
+                      >
+                        <PasswordInput
+                          value={accessStore.openai2ApiKey}
+                          type="text"
+                          placeholder={Locale.Settings.Access.OpenAI.ApiKey.Placeholder}
+                          onChange={(e) => {
+                            accessStore.update(
+                              (access) => (access.openai2ApiKey = e.currentTarget.value),
+                            );
+                          }}
+                        />
+                      </ListItem>
+                    </>
+                  ) : accessStore.provider === "OpenAI3" ? (
+                    <>
+                      <ListItem
+                        title={Locale.Settings.Access.OpenAI.Endpoint.Title}
+                        subTitle={Locale.Settings.Access.OpenAI.Endpoint.SubTitle}
+                      >
+                        <input
+                          type="text"
+                          value={accessStore.openai3Url}
+                          placeholder={OPENAI_BASE_URL}
+                          onChange={(e) =>
+                            accessStore.update(
+                              (access) => (access.openai3Url = e.currentTarget.value),
+                            )
+                          }
+                        ></input>
+                      </ListItem>
+                      <ListItem
+                        title={Locale.Settings.Access.OpenAI.ApiKey.Title}
+                        subTitle={Locale.Settings.Access.OpenAI.ApiKey.SubTitle}
+                      >
+                        <PasswordInput
+                          value={accessStore.openai3ApiKey}
+                          type="text"
+                          placeholder={Locale.Settings.Access.OpenAI.ApiKey.Placeholder}
+                          onChange={(e) => {
+                            accessStore.update(
+                              (access) => (access.openai3ApiKey = e.currentTarget.value),
+                            );
+                          }}
+                        />
+                      </ListItem>
                     </>
                   ) : accessStore.provider === "Azure" ? (
                     <>

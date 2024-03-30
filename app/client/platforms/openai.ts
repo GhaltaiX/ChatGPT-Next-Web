@@ -47,6 +47,8 @@ export class ChatGPTApi implements LLMApi {
     const accessStore = useAccessStore.getState();
 
     const isAzure = accessStore.provider === ServiceProvider.Azure;
+    const isOpenAI2 = accessStore.provider === ServiceProvider.OpenAI2;
+    const isOpenAI3 = accessStore.provider === ServiceProvider.OpenAI3;
 
     if (isAzure && !accessStore.isValidAzure()) {
       throw Error(
@@ -54,7 +56,13 @@ export class ChatGPTApi implements LLMApi {
       );
     }
 
-    let baseUrl = isAzure ? accessStore.azureUrl : accessStore.openaiUrl;
+    let baseUrl = isAzure
+    ? accessStore.azureUrl
+    : isOpenAI2
+    ? accessStore.openai2Url
+    : isOpenAI3
+    ? accessStore.openai3Url
+    : accessStore.openaiUrl;
 
     if (baseUrl.length === 0) {
       const isApp = !!getClientConfig()?.isApp;
