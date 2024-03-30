@@ -857,8 +857,37 @@ function _Chat() {
   };
 
   const onDelete = (msgId: string) => {
-    deleteMessage(msgId);
-  };
+  const session = chatStore.currentSession();
+  const messageIndex = session.messages.findIndex(m => m.id === msgId);
+  const deletedMessage = session.messages[messageIndex];
+
+  // Store the deleted message and its index for potential restoration
+  const restoreData = { message: deletedMessage, index: messageIndex };
+
+  // Delete the message immutably
+  chatStore.updateCurrentSession(session => {
+    const newMessages = [...session.messages];
+    newMessages.splice(messageIndex, 1); // Remove the message immutably
+    session.messages = newMessages;
+  });
+
+  // Show a toast with a revert option
+  showToast(
+    "Message Deleted",
+    {
+      text: "Revert",
+      onClick: () => {
+        // Restore the deleted message immutably
+        chatStore.updateCurrentSession(session => {
+          const newMessages = [...session.messages];
+          newMessages.splice(restoreData.index, 0, restoreData.message); // Insert the message immutably
+          session.messages = newMessages;
+        });
+      }
+    },
+    5000
+  );
+};
 
   const onResend = (message: ChatMessage) => {
     // when it is resending a message
@@ -867,6 +896,7 @@ function _Chat() {
     // 3. delete original user input and bot's message
     // 4. resend the user's input
 
+    const session = chatStore.currentSession();
     const resendingIndex = session.messages.findIndex(
       (m) => m.id === message.id,
     );
@@ -875,6 +905,10 @@ function _Chat() {
       console.error("[Chat] failed to find resending message", message);
       return;
     }
+    // Prepare for potential restoration
+    const restoreData = {
+      messages: [...session.messages], // Store a copy of the current messages for restoration
+    };
     session.messages.slice(resendingIndex + 1).forEach(msg => deleteMessage(msg.id));
 
     let userMessage: ChatMessage | undefined;
@@ -915,18 +949,37 @@ function _Chat() {
     const images = getMessageImages(userMessage);
     chatStore.onUserInput(textContent, images).then(() => setIsLoading(false));
     //inputRef.current?.focus();
+    // Show a toast with a revert option
+    showToast(
+      "Message Resent",
+      {
+        text: "Revert",
+        onClick: () => {
+          // Restore the messages immutably
+          chatStore.updateCurrentSession(session => {
+            session.messages = restoreData.messages;
+          });
+        }
+      },
+      5000
+    );
   };
 
   const onPinMessage = (message: ChatMessage) => {
-    chatStore.updateCurrentSession((session) =>
-      session.mask.context.push(message),
-    );
+    // Show a confirmation dialog before pinning the message
+    showConfirm("Are you sure you want to pin this message?").then((confirmed) => {
+      if (confirmed) {
+        chatStore.updateCurrentSession((session) =>
+          session.mask.context.push(message),
+        );
 
-    showToast(Locale.Chat.Actions.PinToastContent, {
-      text: Locale.Chat.Actions.PinToastAction,
-      onClick: () => {
-        setShowPromptModal(true);
-      },
+        showToast(Locale.Chat.Actions.PinToastContent, {
+          text: Locale.Chat.Actions.PinToastAction,
+          onClick: () => {
+            setShowPromptModal(true);
+          },
+        });
+      }
     });
   };
 
