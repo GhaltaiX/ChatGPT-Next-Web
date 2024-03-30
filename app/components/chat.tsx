@@ -392,25 +392,22 @@ function useScrollToBottom(
   // for auto-scroll
 
   const [autoScroll, setAutoScroll] = useState(true);
-  function scrollDomToBottom() {
-    if (!autoScroll) {
-      setAutoScroll(true);
-    }
+  const scrollDomToBottom = useCallback(() => {
     const dom = scrollRef.current;
     if (dom) {
-      dom.scrollTo(0, dom.scrollHeight);
+      requestAnimationFrame(() => {
+        setAutoScroll(true);
+        dom.scrollTo({ top: dom.scrollHeight, behavior: 'smooth' });
+      });
     }
-  }
+  }, [scrollRef]);
 
   // auto scroll
   useEffect(() => {
     if (autoScroll && !detach) {
-      const dom = scrollRef.current;
-      if (dom) {
-        dom.scrollTo(0, dom.scrollHeight);
-      }
+      scrollDomToBottom();
     }
-  }, [autoScroll, detach, scrollRef]);
+  }, [autoScroll, detach, scrollDomToBottom]);
 
   return {
     scrollRef,
