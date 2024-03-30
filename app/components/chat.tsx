@@ -392,22 +392,25 @@ function useScrollToBottom(
   // for auto-scroll
 
   const [autoScroll, setAutoScroll] = useState(true);
-  const scrollDomToBottom = useCallback(() => {
+  function scrollDomToBottom() {
+    if (!autoScroll) {
+      setAutoScroll(true);
+    }
     const dom = scrollRef.current;
     if (dom) {
-      requestAnimationFrame(() => {
-        setAutoScroll(true);
-        dom.scrollTo({ top: dom.scrollHeight, behavior: 'smooth' });
-      });
+      dom.scrollTo(0, dom.scrollHeight);
     }
-  }, [scrollRef]);
+  }
 
   // auto scroll
   useEffect(() => {
     if (autoScroll && !detach) {
-      scrollDomToBottom();
+      const dom = scrollRef.current;
+      if (dom) {
+        dom.scrollTo(0, dom.scrollHeight);
+      }
     }
-  }, [autoScroll, detach, scrollDomToBottom]);
+  }, [autoScroll, detach, scrollRef]);
 
   return {
     scrollRef,
@@ -1491,8 +1494,8 @@ function _Chat() {
             onInput={(e) => onInput(e.currentTarget.value)}
             value={userInput}
             onKeyDown={onInputKeyDown}
-            onFocus={scrollToBottom}
-            onClick={scrollToBottom}
+            // onFocus={scrollToBottom}
+            // onClick={scrollToBottom}
             onPaste={handlePaste}
             rows={inputRows}
             autoFocus={autoFocus}
