@@ -131,10 +131,10 @@ export class ChatGPTApi implements LLMApi {
       max_tokens: modelConfig.useMaxTokens ? modelConfig.max_tokens : undefined,
     };
 
-    // add max_tokens to vision model
-    if (visionModel) {
-      requestPayload["max_tokens"] = Math.max(modelConfig.max_tokens, 4000);
-    }
+    // // add max_tokens to vision model
+    // if (visionModel) {
+    //   requestPayload["max_tokens"] = Math.max(modelConfig.max_tokens, 4000);
+    // }
 
     console.log("[Request] openai payload: ", requestPayload);
 
