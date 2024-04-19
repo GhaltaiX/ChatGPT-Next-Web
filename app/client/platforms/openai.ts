@@ -63,11 +63,22 @@ export class ChatGPTApi implements LLMApi {
     const isAzure = accessStore.provider === ServiceProvider.Azure;
     const isOpenAI2 = accessStore.provider === ServiceProvider.OpenAI2;
     const isOpenAI3 = accessStore.provider === ServiceProvider.OpenAI3;
+    let baseUrl = "";
 
-    if (isAzure && !accessStore.isValidAzure()) {
-      throw Error(
-        "incomplete azure config, please check it in your settings page",
-      );
+    if (accessStore.useCustomConfig) {
+      const isAzure = accessStore.provider === ServiceProvider.Azure;
+
+      if (isAzure && !accessStore.isValidAzure()) {
+        throw Error(
+          "incomplete azure config, please check it in your settings page",
+        );
+      }
+
+      if (isAzure) {
+        path = makeAzurePath(path, accessStore.azureApiVersion);
+      }
+
+      baseUrl = isAzure ? accessStore.azureUrl : accessStore.openaiUrl;
     }
 
     let baseUrl = isAzure
@@ -90,10 +101,6 @@ export class ChatGPTApi implements LLMApi {
     }
     if (!baseUrl.startsWith("http") && !baseUrl.startsWith(ApiPath.OpenAI)) {
       baseUrl = "https://" + baseUrl;
-    }
-
-    if (isAzure) {
-      path = makeAzurePath(path, accessStore.azureApiVersion);
     }
 
     console.log("[Proxy Endpoint] ", baseUrl, path);
